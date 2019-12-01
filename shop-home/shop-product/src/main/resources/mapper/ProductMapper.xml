@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gs.dao.ProductMapper">
+    <select id="totalNumber" resultType="Long" parameterType="java.lang.String">
+        select count(*) from p_product p
+        left join p_brand b on p.brandId=b.id where p.id = #{id}
+    </select>
+    <select id="pagingQueryProduct" resultType="com.gs.entity.ProductInfo">
+        select p.id, t.typeName, b.brandName, productName, title, mainImg, img, detail, price, stock, status, createTime, p.updateTime from p_product p
+        left join p_brand b on p.brandId=b.id
+        left join p_type t on p.typeId=t.id
+        where p.typeId = #{id}
+        limit #{pageBean.start},#{pageBean.length}
+    </select>
+</mapper>
