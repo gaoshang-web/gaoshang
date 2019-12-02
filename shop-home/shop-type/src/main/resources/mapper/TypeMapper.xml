@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gs.dao.TypeMapper">
+
+    <select id="queryTypeList" resultType="com.gs.entity.TypeInfo">
+        select id, typeName,if(id = (select id from p_type where id = #{id}), 'true', 'false') checked from p_type
+        where pid = (select pid from p_type where id = #{id})
+    </select>
+    <!--<select id="queryTypeList" resultType="com.gs.entity.TypeInfo">
+        select id, typeName,if(id = (select id from p_type where id = #{id}), 'true', 'false') checked from p_type
+        where pid = (select pid from p_type where id = #{id})
+    </select>-->
+</mapper>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="shop-cart" />
+        <module name="shop-web" />
+        <module name="shop-login" />
+        <module name="shop-type" />
+        <module name="shop-brand" />
+        <module name="shop-commons" />
+        <module name="shop-product" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="shop-brand" target="1.8" />
+      <module name="shop-cart" target="1.8" />
+      <module name="shop-commons" target="1.8" />
+      <module name="shop-login" target="1.8" />
+      <module name="shop-product" target="1.8" />
+      <module name="shop-type" target="1.8" />
+      <module name="shop-web" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="shop-brand" options="-parameters" />
+      <module name="shop-cart" options="-parameters" />
+      <module name="shop-commons" options="" />
+      <module name="shop-login" options="-parameters" />
+      <module name="shop-product" options="-parameters" />
+      <module name="shop-type" options="-parameters" />
+    </option>
+  </component>
+</project>
