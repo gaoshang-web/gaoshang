@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gs.dao.UserMapper">
+
+    <sql id="conditionSelectSql">
+        <where>
+            <if test="userInfo.realName != null and userInfo.realName != ''">
+                realName like concat('%',#{userInfo.realName},'%')
+            </if>
+            <if test="userInfo.sex != null">
+                and sex = #{userInfo.sex}
+            </if>
+            <if test="userInfo.status != null">
+                and status = #{userInfo.status}
+            </if>
+            <if test="userInfo.startTime != null and userInfo.startTime != ''">
+                and lastLoginTime &gt;= #{userInfo.startTime}
+            </if>
+            <if test="userInfo.endTime != null and userInfo.endTime != ''">
+                and lastLoginTime &lt;= #{userInfo.endTime}
+            </if>
+        </where>
+    </sql>
+    <select id="queryUser" resultType="com.gs.entity.UserInfo">
+        select * from t_u_user
+    </select>
+    <select id="totalNumber" resultType="Long">
+        select count(*) from t_u_user
+        <include refid="conditionSelectSql"/>
+    </select>
+    <select id="pagingQueryUser" resultType="com.gs.entity.UserInfo">
+        select * from t_u_user
+        <include refid="conditionSelectSql"/>
+        <if test="userInfo.orderName != null and userInfo.orderName != ''">
+            order by ${userInfo.orderName}
+        </if>
+        <if test="userInfo.orderBy != null and userInfo.orderBy != ''">
+            ${userInfo.orderBy}
+        </if>
+        limit #{pageBean.start},#{pageBean.length}
+    </select>
+    <select id="queryUserByUserName" parameterType="java.lang.String" resultType="com.gs.entity.UserInfo">
+        select * from t_u_user where userName = #{userName}
+    </select>
+    <insert id="saveUser" parameterType="com.gs.entity.UserInfo">
+        insert into t_u_user (userName, password, realName, mailbox, sex, status, loginCount, imgUrl) values(#{userName}, #{password}, #{realName}, #{mailbox}, #{sex}, #{status}, #{loginCount}, #{imgUrl})
+    </insert>
+    <delete id="deleteUser" parameterType="java.lang.Integer">
+        delete from t_user where id = #{id}
+    </delete>
+    <select id="queryUserById" parameterType="java.lang.Integer" resultType="com.gs.entity.UserInfo">
+        select * from t_u_user where id = #{id}
+    </select>
+    <update id="updateUser" parameterType="com.gs.entity.UserInfo">
+        update t_u_user set
+        userName = #{userName},
+        password = #{password},
+        realName = #{realName},
+        mailbox = #{mailbox},
+        sex = #{sex},
+        status = #{status},
+        loginCount = #{loginCount},
+        lastLoginTime = #{lastLoginTime},
+        imgUrl = #{imgUrl}
+        where id = #{id}
+    </update>
+</mapper>

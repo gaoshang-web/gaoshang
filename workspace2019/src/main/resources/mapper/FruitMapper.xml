@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gs.dao.FruitMapper">
+
+    <sql id="conditionSelectSql">
+        <where>
+            <if test="fruitInfo.fruitName != null and fruitInfo.fruitName != ''">
+                fruitName like concat('%',#{fruitInfo.fruitName},'%')
+            </if>
+            <if test="fruitInfo.racking != null">
+                and racking = #{fruitInfo.racking}
+            </if>
+            <if test="fruitInfo.startTime != null and fruitInfo.startTime != ''">
+                and rackingDate &gt;= #{fruitInfo.startTime}
+            </if>
+            <if test="fruitInfo.endTime != null and fruitInfo.endTime != ''">
+                and rackingDate &lt;= #{fruitInfo.endTime}
+            </if>
+        </where>
+    </sql>
+    <select id="totalNumber" resultType="Long">
+        select count(*) from f_fruit
+        <include refid="conditionSelectSql"/>
+    </select>
+    <select id="pagingQueryFruit" resultType="com.gs.entity.FruitInfo">
+        select * from f_fruit
+        <include refid="conditionSelectSql"/>
+        <if test="fruitInfo.orderName != null and fruitInfo.orderName != ''">
+            order by ${fruitInfo.orderName}
+        </if>
+        <if test="fruitInfo.orderBy != null and fruitInfo.orderBy != ''">
+            ${fruitInfo.orderBy}
+        </if>
+        limit #{pageBean.start},#{pageBean.length}
+    </select>
+    <insert id="saveFruit" parameterType="com.gs.entity.FruitInfo">
+        insert into f_fruit (fruitName, racking, rackingDate, imgUrl) values(#{fruitName}, #{racking}, #{rackingDate}, #{imgUrl})
+    </insert>
+    <delete id="deleteFruit" parameterType="java.lang.Integer">
+        delete from f_fruit where id = #{id}
+    </delete>
+    <select id="queryFruitById" parameterType="java.lang.Integer" resultType="com.gs.entity.FruitInfo">
+        select * from f_fruit where id = #{id}
+    </select>
+    <update id="updateFruit" parameterType="com.gs.entity.FruitInfo">
+        update f_fruit set
+        fruitName = #{fruitName},
+        racking = #{racking},
+        rackingDate = #{rackingDate},
+        imgUrl = #{imgUrl}
+        where id = #{id}
+    </update>
+</mapper>

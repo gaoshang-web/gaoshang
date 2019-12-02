@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gs.dao.LogMapper">
+
+    <sql id="conditionSelectSql">
+        <where>
+            <if test="LogInfo.LogName != null and LogInfo.LogName != ''">
+                LogName like concat('%',#{LogInfo.LogName},'%')
+            </if>
+            <if test="LogInfo.racking != null">
+                and racking = #{LogInfo.racking}
+            </if>
+            <if test="LogInfo.startTime != null and LogInfo.startTime != ''">
+                and rackingDate &gt;= #{LogInfo.startTime}
+            </if>
+            <if test="LogInfo.endTime != null and LogInfo.endTime != ''">
+                and rackingDate &lt;= #{LogInfo.endTime}
+            </if>
+        </where>
+    </sql>
+    <select id="totalNumber" resultType="Long">
+        select count(*) from l_log
+    </select>
+    <!--<if test="LogInfo.orderName != null and LogInfo.orderName != ''">
+        order by ${LogInfo.orderName}
+    </if>
+    <if test="LogInfo.orderBy != null and LogInfo.orderBy != ''">
+        ${LogInfo.orderBy}
+    </if>-->
+    <select id="pagingQueryLog" parameterType="com.gs.util.PageBean" resultType="com.gs.entity.LogInfo">
+        select * from l_log
+
+        limit #{start},#{length}
+    </select>
+    <insert id="saveLog" parameterType="com.gs.entity.LogInfo">
+        insert into l_log (operationUser, classUrl, methodName, ipAddr, methodMessage, consumeTime, status, currentTime)
+        values(#{operationUser}, #{classUrl}, #{methodName}, #{ipAddr}, #{methodMessage}, #{consumeTime}, #{status}, #{currentTime})
+    </insert>
+    <delete id="deleteLog" parameterType="java.lang.Integer">
+        delete from l_log where id = #{id}
+    </delete>
+    <select id="queryLogById" parameterType="java.lang.Integer" resultType="com.gs.entity.LogInfo">
+        select * from l_log where id = #{id}
+    </select>
+    <update id="updateLog" parameterType="com.gs.entity.LogInfo">
+        update l_log set
+        LogName = #{LogName},
+        racking = #{racking},
+        rackingDate = #{rackingDate},
+        imgUrl = #{imgUrl}
+        where id = #{id}
+    </update>
+</mapper>
